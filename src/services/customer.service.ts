@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
 import { CustomerDto } from 'src/product/dto/customer.dto';
 import { CustomerEntity } from 'src/product/entities/customer.entity';
 
@@ -21,12 +21,13 @@ export class CustomerService {
   }
 
   async findCustomerById(id: string): Promise<CustomerEntity> {
-    return await this.customerRepository.findOne(id);
+    const options: FindOneOptions<CustomerEntity> = { where: { id } };
+    return await this.customerRepository.findOne(options);
   }
 
   async updateCustomer(id: string, customerDto: CustomerDto): Promise<CustomerEntity> {
     await this.customerRepository.update(id, customerDto);
-    return await this.customerRepository.findOne(id);
+    return await this.customerRepository.findOne({ where: { id } });
   }
 
   async deleteCustomer(id: string): Promise<void> {
