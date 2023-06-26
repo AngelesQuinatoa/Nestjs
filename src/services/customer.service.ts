@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CustomerDto } from 'src/product/dto/customer.dto';
+import { CreateCustomerDto } from 'src/product/dto/create-customer.dto';
 import { CustomerEntity } from 'src/product/entities/customer.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CustomerService {
@@ -11,22 +11,22 @@ export class CustomerService {
     private readonly customerRepository: Repository<CustomerEntity>,
   ) {}
 
-  async createCustomer(customerDto: CustomerDto): Promise<CustomerEntity> {
-    const customer = this.customerRepository.create(customerDto);
-    return await this.customerRepository.save(customer);
+  async createCustomer(createCustomerDto: CreateCustomerDto): Promise<CustomerEntity> {
+    const customer = this.customerRepository.create(createCustomerDto);
+    return this.customerRepository.save(customer);
   }
 
-  async findAllCustomers(): Promise<CustomerEntity[]> {
-    return await this.customerRepository.find();
+  async getAllCustomers(): Promise<CustomerEntity[]> {
+    return this.customerRepository.find();
   }
 
-  async findCustomerById(id: string): Promise<CustomerEntity> {
-    return await this.customerRepository.findOne(id);
+  async getCustomerById(id: string): Promise<CustomerEntity> {
+    return this.customerRepository.findOne(id);
   }
 
-  async updateCustomer(id: string, customerDto: CustomerDto): Promise<CustomerEntity> {
-    await this.customerRepository.update(id, customerDto);
-    return await this.customerRepository.findOne(id);
+  async updateCustomer(id: string, updateCustomerDto: CreateCustomerDto): Promise<CustomerEntity> {
+    await this.customerRepository.update(id, updateCustomerDto);
+    return this.customerRepository.findOne(id);
   }
 
   async deleteCustomer(id: string): Promise<void> {

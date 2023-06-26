@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { MovieDto } from 'src/product/dto/movie.dto';
+import { CreateMovieDto } from 'src/product/dto/create-movie.dto';
 import { MovieEntity } from 'src/product/entities/movie.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class MovieService {
@@ -11,22 +11,22 @@ export class MovieService {
     private readonly movieRepository: Repository<MovieEntity>,
   ) {}
 
-  async createMovie(movieDto: MovieDto): Promise<MovieEntity> {
-    const movie = this.movieRepository.create(movieDto);
-    return await this.movieRepository.save(movie);
+  async createMovie(createMovieDto: CreateMovieDto): Promise<MovieEntity> {
+    const movie = this.movieRepository.create(createMovieDto);
+    return this.movieRepository.save(movie);
   }
 
-  async findAllMovies(): Promise<MovieEntity[]> {
-    return await this.movieRepository.find();
+  async getAllMovies(): Promise<MovieEntity[]> {
+    return this.movieRepository.find();
   }
 
-  async findMovieById(id: string): Promise<MovieEntity> {
-    return await this.movieRepository.findOne(id);
+  async getMovieById(id: string): Promise<MovieEntity> {
+    return this.movieRepository.findOne(id);
   }
 
-  async updateMovie(id: string, movieDto: MovieDto): Promise<MovieEntity> {
-    await this.movieRepository.update(id, movieDto);
-    return await this.movieRepository.findOne(id);
+  async updateMovie(id: string, updateMovieDto: CreateMovieDto): Promise<MovieEntity> {
+    await this.movieRepository.update(id, updateMovieDto);
+    return this.movieRepository.findOne(id);
   }
 
   async deleteMovie(id: string): Promise<void> {
